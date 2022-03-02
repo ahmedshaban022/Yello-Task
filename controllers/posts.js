@@ -26,10 +26,60 @@ addPost: async (req,res)=>{
 
 
     },
+    
     deletePost: async(req,res)=>{
 
+    try {
+    
+       const {token}= req.headers;
+       if(!token) return  res.status(400).send({msg:"Token not found!!"});
+
+       let tokenData= await jwt.verify(token,"AHMED");
+       const isUser= await Users.findById(tokenData._id);
+       if(!isUser) return res.status(400).send({msg:"Access Denied. Login first"});
+       
+       let postId = req.params.id;
+       let post = await Posts.findOne({_id:postId});
+       if(!post) return res.status(400).send({msg:"Post Not Found!"});
+        
+       if(post.userId != tokenData.id) return res.status(400).send({msg:"Access denied !"});
+
+         await Posts.findByIdAndDelete(post._id);
+         res.status(200).send({msg:"post deleted successfuly"});
+
+    } catch (err) {
+        res.status(400).send({msg:err.message});
+    }
+
     },
+
     editPost: async(req,res)=>{
+
+
+        try {
+    
+            const {token}= req.headers;
+            if(!token) return  res.status(400).send({msg:"Token not found!!"});
+     
+            let tokenData= await jwt.verify(token,"AHMED");
+            const isUser= await Users.findById(tokenData._id);
+            if(!isUser) return res.status(400).send({msg:"Access Denied. Login first"});
+            
+            let postId = req.params.id;
+            let post = await Posts.findOne({_id:postId});
+            if(!post) return res.status(400).send({msg:"Post Not Found!"});
+         
+            if(post.userId != tokenData.id) return res.status(400).send({msg:"Access denied !"});
+            
+            const {title,body}=req.body;
+              await Posts.findByIdAndUpdate(post._id,{title,body});
+              res.status(200).send({msg:"post updated successfuly"});
+     
+         } catch (err) {
+             res.status(400).send({msg:err.message});
+         }
+
+
 
     },
     getPostsByUserId: async(req,res)=>{
