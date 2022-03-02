@@ -1,6 +1,8 @@
 const Posts= require('../models/posts');
 const Users= require('../models/user');
 const jwt = require('jsonwebtoken');
+
+
 const postsCtrl={
 addPost: async (req,res)=>{
         
@@ -26,7 +28,7 @@ addPost: async (req,res)=>{
 
 
     },
-    
+
     deletePost: async(req,res)=>{
 
     try {
