@@ -13,14 +13,14 @@ const postsCtrl={
             if(!isUser) return res.status(400).send({msg:"Access Denied. Log in first"});
             
             let posts = await Posts.find({userId:tokenData.id});
-            res.send({msg:"success",data:posts})
+            res.send({msg:"success",data:posts,id:tokenData.id})
         } catch (error) {
             res.status(400).send({msg:error.message});
         }
 
     },
 addPost: async (req,res)=>{
-        
+       
     try{
         const {token}= req.headers;
         
@@ -78,9 +78,9 @@ addPost: async (req,res)=>{
             const {token}= req.headers;
             if(!token) return  res.status(400).send({msg:"Token not found!!"});
      
-            let tokenData= await jwt.verify(token,"AHMED");
-            const isUser= await Users.findById(tokenData._id);
-            if(!isUser) return res.status(400).send({msg:"Access Denied. Login first"});
+            let tokenData = await jwt.verify(token,"AHMED");
+            const isUser  = await Users.findById(tokenData._id);
+            if(!isUser)     return res.status(400).send({msg:"Access Denied. Login first"});
             
             let postId = req.params.id;
             let post = await Posts.findOne({_id:postId});

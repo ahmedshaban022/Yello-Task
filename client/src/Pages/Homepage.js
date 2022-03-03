@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Config from '../config';
 import { setPosts } from '../Store/posts/postsActions';
 
@@ -13,8 +14,11 @@ const Homepage = () => {
     let [posts,setPosts]= useState([]);
     let [users,setUsers]= useState([]);
     let [otherUserEmail,setOtherUserEmail] =useState();
-    
-    
+    let [currentUserId,setCurrentUserId]=useState();
+    let [newPost,setNewPost] = useState();
+     
+
+
     useEffect(() => {
         if(!localStorage.getItem('token')) {navigate('/login');}
         
@@ -26,6 +30,9 @@ const Homepage = () => {
             ).then(res=>{
                 // dispatch(setPosts(res.data.data));
                 setPosts(res.data.data);
+                setCurrentUserId(res.data.id);
+                
+                
                 });
         
         axios.get(`${Config.API}users`, {
@@ -48,9 +55,53 @@ const Homepage = () => {
           }
         ).then(res=>{
             setPosts(res.data.data);
-            console.log(res.data.data);});
+        });
     
     
+    }
+
+    const handleDeletePost=(id)=>{
+        
+        axios.delete(`${Config.API}posts/delete-post/${id}`, {
+            headers: {
+            token:localStorage.getItem('token')
+            
+            }
+          }
+        ).then(res=>{
+            axios.get(`${Config.API}posts/`, {
+                headers: {
+                token:localStorage.getItem('token')
+                }
+              }
+            ).then(res=>{
+                // dispatch(setPosts(res.data.data));
+                setPosts(res.data.data);
+                });
+           toast.success('Post Deleted')
+            toast.success(res.data.data);});
+
+    }
+
+
+    const handelAddPost=({target})=>{
+        setNewPost({...newPost,[target.name]:target.value});
+    }
+    const sendNewPost=(e)=>{
+      e.preventDefault();
+
+        axios.post(`${Config.API}posts/add-post`, {...newPost}, {
+            headers: {
+            token:localStorage.getItem('token')
+            }
+          }
+        ).then(res=>{
+          let newArr=[...posts,{...newPost,userId:currentUserId}];
+          setPosts(newArr);
+          setNewPost('');
+          toast.success("Post Added Successfuly");
+          e.target.reset();
+        }).catch(err=>{toast.error('somthing went error')})
     }
 
     return (
@@ -62,8 +113,52 @@ const Homepage = () => {
             <div className='row  mt-3'>
                 <div className='col-10'>
 
+
+
+
+
+
+
+                <div className='m-3'>
+  <button type="button" className="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Add New Post</button>
+  <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div className="modal-dialog">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title" id="exampleModalLabel">New Post</h5>
+          <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" />
+        </div>
+        <div className="modal-body">
+          <form onSubmit={sendNewPost}>
+            <div className="mb-3">
+              <label htmlFor="recipient-name" className="col-form-label">Title:</label>
+              <input type="text" name='title' onChange={handelAddPost} className="form-control" id="recipient-name" />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="message-text" className="col-form-label">Body:</label>
+              <textarea className="form-control" name='body' onChange={handelAddPost} id="message-text" defaultValue={""} />
+            </div>
+        <div className="modal-footer mt-3">
+          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <input type="submit"  className="btn btn-primary" data-bs-dismiss="modal"/>
+        </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
                 <div className=' ms-auto row  '>
-{   posts.length>0 ?
+                    
+{   posts.length>0?
               posts.map((post,index)=>(
 
                   <div className="card col-md-3 col-lg-4 shadow  text-center " key={index} >
@@ -74,12 +169,16 @@ const Homepage = () => {
                     {post.body}
                     </p>
                     <h6 className="card-subtitle mb-2 text-muted">Post ID : {post.id}</h6>
-                    <a href="#" className="card-link">
-                    Card link
-                    </a>
-                    <a href="#" className="card-link">
-                    Another link
-                    </a>
+                   
+                  { currentUserId== post.userId &&<div className='d-flex justify-content-around mt-3'>
+                    <button  className="btn btn-info">
+                    Edit
+                    </button>
+                    <button  className="btn btn-danger"
+                    onClick={()=>handleDeletePost(post._id)}>
+                    Delete
+                    </button>
+                   </div>}
                 </div>
                 </div>
                     ))    :<h3 className='text-muted'>Loading..</h3> 
