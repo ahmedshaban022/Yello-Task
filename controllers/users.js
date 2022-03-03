@@ -14,8 +14,8 @@ register: async (req,res)=>{
     const {username,email,password}=req.body;
     
     let checkEmailExist =await Users.findOne({email});
-    if (checkEmailExist) return res.status(400).send({msg:"Email Already Exists"});
-    if (password.length<6) return res.status(400).send({msg:"Password must be 6 digits or more"});
+    if (checkEmailExist) return res.send({msg:"Email Already Exist"});
+    if (password.length<6) return res.send({msg:"Password must be 6 digits or more"});
     
     let users = await Users.find();
     let id=users.length+1;
@@ -28,9 +28,9 @@ register: async (req,res)=>{
 login: async (req,res)=>{
 const {email,password}= req.body;
 const user= await Users.findOne({email});
-if (!user) return res.status(400).send({msg:"Invalid Credentials"});
+if (!user) return res.send({msg:"Invalid Credentials"});
 const checkPassword=bcrypt.compareSync(password,user.password);
-if(!checkPassword) return res.status(400).send({msg:"Invalid Credentials"});
+if(!checkPassword) return res.send({msg:"Invalid Credentials"});
 
 if(user.firstTimeLogin)
 {
@@ -49,7 +49,7 @@ if(user.firstTimeLogin)
 
 let posts = await Posts.find({userId:user.id});
 token= jwt.sign({id:user.id,_id:user._id,email:user.email},"AHMED");
-    if(!token) return res.status(400).send({msg:"Access Denied"});
+    if(!token) return res.send({msg:"Access Denied"});
 
     return res.send({msg:"Login successfuly",data:posts,token});
 
@@ -64,7 +64,7 @@ getAllUsers:async (req,res)=>{
          res.status(200).send({msg:"success",data:users});
     }catch(err)
     {
-        res.status(400).send({msg:err.message});
+        res.send({msg:err.message});
     }
   
 }
