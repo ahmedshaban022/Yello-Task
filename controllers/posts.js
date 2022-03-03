@@ -4,10 +4,25 @@ const jwt = require('jsonwebtoken');
 
 
 const postsCtrl={
+    getPosts:async (req,res)=>{
+        try {
+            
+            const {token}= req.headers;
+            let tokenData = await jwt.verify(token,"AHMED");
+            const isUser= await Users.findById(tokenData._id);
+            if(!isUser) return res.status(400).send({msg:"Access Denied. Log in first"});
+            
+            let posts = await Posts.find({userId:tokenData.id});
+            res.send({msg:"success",data:posts})
+        } catch (error) {
+            res.status(400).send({msg:error.message});
+        }
+
+    },
 addPost: async (req,res)=>{
         
-    const {token}= req.headers;
     try{
+        const {token}= req.headers;
         
        let tokenData = await jwt.verify(token,"AHMED");
         const isUser= await Users.findById(tokenData._id);
@@ -94,7 +109,7 @@ addPost: async (req,res)=>{
        if(!isUser) return res.status(400).send({msg:"Access Denied. Login first"});
 
        let userId=req.params.id;
-      
+            console.log(id);
         let posts= await Posts.find({userId});
             res.status(200).send({msg:"success",data:posts});
 

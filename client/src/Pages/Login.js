@@ -43,12 +43,8 @@ const  handleOnSubmit= async (e)=>{
             if(res.data.token)
             {
                 
-                dispatch(crruentUser(user.email));
-                 dispatch(setPosts(res.data.data));
-
-                 // dont forget to try moving the token to Store instead of localStorage -----
                 localStorage.setItem('token',res.data.token);
-                 navigate('/');
+                navigate('/');
             }
   
         })

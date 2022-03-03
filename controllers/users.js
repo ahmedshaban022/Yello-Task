@@ -47,11 +47,11 @@ if(user.firstTimeLogin)
        
 }
 
-let posts = await Posts.find({userId:user.id});
-token= jwt.sign({id:user.id,_id:user._id,email:user.email},"AHMED");
-    if(!token) return res.send({msg:"Access Denied"});
+// let posts = await Posts.find({userId:user.id});
+let token= jwt.sign({id:user.id,_id:user._id,email:user.email},"AHMED");
+    // if(!token) return res.send({msg:"Access Denied"});
 
-    return res.send({msg:"Login successfuly",data:posts,token});
+    return res.send({msg:"Login successfuly",token});
 
 
 },

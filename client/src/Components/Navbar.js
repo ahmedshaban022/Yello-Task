@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 function Navbar(props) {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     return (
         <div>
            <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -22,12 +22,15 @@ function Navbar(props) {
       <span className="navbar-toggler-icon" />
     </button>
     <div className="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul className="navbar-nav">
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <NavLink className="nav-link " aria-current="page"to="/">
-            Posts
+          Posts
           </NavLink>
-        </li>
+        </li> */}
+
+{!localStorage.getItem('token') ?
+
+        <ul className="navbar-nav">
         <li className="nav-item">
           <NavLink className="nav-link " aria-current="page"to="/login">
             Login
@@ -38,12 +41,16 @@ function Navbar(props) {
             Register
           </NavLink>
         </li>
-          
-          
       </ul>
-      <ul className='ms-auto navbar-nav'>
+       
+       :   
+     
+       <ul className='ms-auto navbar-nav'>
           <li > <button className='btn text-danger fw-bold pointer' onClick={()=>{localStorage.clear();navigate('/login')}}>Logout</button> </li>
       </ul>
+      
+      }
+
     </div>
   </div>
 </nav>

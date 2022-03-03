@@ -54,7 +54,7 @@ const  handleOnSubmit= async (e)=>{
         
         
     }else{
-        toast.error("Password dose not match wi Confirm password")
+        toast.error("Password dose not match Confirm password")
     }
 
 }
