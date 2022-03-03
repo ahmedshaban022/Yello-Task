@@ -109,7 +109,6 @@ addPost: async (req,res)=>{
        if(!isUser) return res.status(400).send({msg:"Access Denied. Login first"});
 
        let userId=req.params.id;
-            console.log(id);
         let posts= await Posts.find({userId});
             res.status(200).send({msg:"success",data:posts});
 
