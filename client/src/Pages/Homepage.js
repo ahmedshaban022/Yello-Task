@@ -40,6 +40,7 @@ const Homepage = () => {
     }, []);
 
     const displayUserPosts=(id)=>{
+        setPosts([]);
         axios.get(`${Config.API}posts/user-posts/${id}`, {
             headers: {
             token:localStorage.getItem('token')
@@ -62,7 +63,7 @@ const Homepage = () => {
                 <div className='col-10'>
 
                 <div className=' ms-auto row  '>
-{   posts.length>0 &&
+{   posts.length>0 ?
               posts.map((post,index)=>(
 
                   <div className="card col-md-3 col-lg-4 shadow  text-center " key={index} >
@@ -81,7 +82,7 @@ const Homepage = () => {
                     </a>
                 </div>
                 </div>
-                    ))      
+                    ))    :<h3 className='text-muted'>Loading..</h3> 
 }
                 </div>
                 </div>

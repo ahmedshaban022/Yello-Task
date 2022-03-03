@@ -2,7 +2,7 @@ const express = require('express');
 const app=express();
 
 const mongoose= require('mongoose');
-const DB_URL="mongodb+srv://uahmed:27727746@main.zojjg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const DB_URL="mongodb+srv://uahmed:27727746@main.zojjg.mongodb.net/yello-task?retryWrites=true&w=majority";
 try {
     mongoose.connect(DB_URL,{useNewUrlParser:true,useUnifiedTopology:true}).then(res=>{console.log("Connected to DB");})
 // .catch((err)=>console.log(err));
