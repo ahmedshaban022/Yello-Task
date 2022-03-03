@@ -1,6 +1,6 @@
 import axios from 'axios';
 import e from 'cors';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Config from '../config'
@@ -10,7 +10,17 @@ import Config from '../config'
 const Register = () => {
 
 let [user,setUser] = useState({});
-const navigate = useNavigate()
+const navigate= useNavigate();
+
+useEffect(() => {
+    if(localStorage.getItem('token')) {navigate('/');}
+
+
+}, []);
+
+
+
+
 const handleOnChange=({target})=>{
     setUser({...user,[target.name]:target.value});
     

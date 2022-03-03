@@ -1,13 +1,26 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Config from '../config';
+import { useDispatch, useSelector } from 'react-redux';
+import { crruentUser, userToken } from '../Store/users/usersActions';
+import { setPosts } from '../Store/posts/postsActions';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
+    const navigate= useNavigate();
+    useEffect(() => {
+        if(localStorage.getItem('token')) {navigate('/');}
 
     
+    }, []);
+
 let [user,setUser] = useState({});
+let currentUser = useSelector((state)=>state.users);
+const dispatch=useDispatch();
+
+
 
 const handleOnChange=({target})=>{
     setUser({...user,[target.name]:target.value});
@@ -29,7 +42,13 @@ const  handleOnSubmit= async (e)=>{
             console.log(res);
             if(res.data.token)
             {
+                
+                dispatch(crruentUser(user.email));
+                 dispatch(setPosts(res.data.data));
+
+                 // dont forget to try moving the token to Store instead of localStorage -----
                 localStorage.setItem('token',res.data.token);
+                 navigate('/');
             }
   
         })
