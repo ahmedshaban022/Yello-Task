@@ -88,28 +88,30 @@ const Homepage = () => {
   };
   const sendNewPost = (e) => {
     e.preventDefault();
+    
 
-    axios
-      .post(
-        `${Config.API}posts/add-post`,
-        { ...newPost },
-        {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
-        }
-      )
-      .then((res) => {
-        let newArr = [...posts, { ...newPost, userId: currentUserId }];
-        setPosts(newArr);
-        setNewPost("");
-        toast.success("Post Added Successfuly");
-        e.target.reset();
-      })
-      .catch((err) => {
-        toast.error("somthing went error");
-      });
-  };
+
+  axios
+  .post(
+    `${Config.API}posts/add-post`,
+    { ...newPost },
+    {
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+    }
+    )
+    .then((res) => {
+      let newArr = [...posts, { ...newPost, userId: currentUserId }];
+      setPosts(newArr);
+      setNewPost("");
+      toast.success("Post Added Successfuly");
+      e.target.reset();
+    })
+    .catch((err) => {
+      toast.error("somthing went error");
+    });
+  } 
 
   const handelEditPost = ({ target }) => {
     setEditPost({ ...editPost, [target.name]: target.value });
@@ -140,7 +142,6 @@ const Homepage = () => {
             setPosts(res.data.data);
           });
         toast.success("Post Edited");
-        toast.success(res.data.data);
       });
   };
   return (
