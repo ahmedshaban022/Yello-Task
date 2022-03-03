@@ -238,12 +238,7 @@ const Homepage = () => {
                                   <div className="modal-body">
                                     <form onSubmit={sendEditedPost}>
                                       <div className="mb-3">
-                                        <label
-                                          htmlFor="recipient-name"
-                                          className="col-form-label"
-                                        >
-                                          Title:
-                                        </label>
+                                        <label htmlFor="recipient-name" className="col-form-label fw-bold text-muted"> Title</label>
                                         <input
                                           type="text"
                                           name="title"
@@ -256,9 +251,9 @@ const Homepage = () => {
                                       <div className="mb-3">
                                         <label
                                           htmlFor="message-text"
-                                          className="col-form-label"
+                                          className="col-form-label fw-bold text-muted"
                                         >
-                                          Body:
+                                          Body
                                         </label>
                                         <textarea
                                           className="form-control"
