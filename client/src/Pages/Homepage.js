@@ -154,31 +154,87 @@ const Homepage = () => {
           {posts[0]?.userId !== currentUserId ? (
             ""
           ) : (
-            <div className="w-50 m-auto">
-              <form className="p-3" onSubmit={sendNewPost}>
-                <input
-                  className="form-control my-3"
-                  type="text"
-                  placeholder="Title"
-                  aria-label="default input example"
-                  name="title"
-                  onChange={handelAddPost}
-                />
-                <textarea
-                  className="form-control"
-                  placeholder="Body"
-                  aria-label="default input example"
-                  name="body"
-                  onChange={handelAddPost}
-                />
-                <input
-                  type="submit"
-                  className="btn btn-success  mt-3"
-                  value="Add Post"
-                  data-bs-dismiss="modal"
-                />
-              </form>
-            </div>
+<div>
+                            <button
+                              type="button"
+                              className="btn btn-success m-2"
+                              data-bs-toggle="modal"
+                              data-bs-target="#exampleModal"
+                              data-bs-whatever="@getbootstrap"
+                            >
+                              Add New Post
+                            </button>
+                            <div
+                              className="modal fade"
+                              id="exampleModal"
+                              tabIndex={-1}
+                              aria-labelledby="exampleModalLabel"
+                              aria-hidden="true"
+                            >
+                              <div className="modal-dialog">
+                                <div className="modal-content">
+                                  <div className="modal-header">
+                                    <h5
+                                      className="modal-title"
+                                      id="exampleModalLabel"
+                                    >
+                                      New Post
+                                    </h5>
+                                    <button
+                                      type="button"
+                                      className="btn-close"
+                                      data-bs-dismiss="modal"
+                                      aria-label="Close"
+                                    />
+                                  </div>
+                                  <div className="modal-body">
+                                    <form onSubmit={sendNewPost}>
+                                      <div className="mb-3">
+                                        <label htmlFor="recipient-name" className="col-form-label fw-bold text-muted"> Title</label>
+                                        <input
+                                          type="text"
+                                          name="title"
+                                          
+                                          onChange={handelAddPost}
+                                          className="form-control"
+                                          id="recipient-name"
+                                        />
+                                      </div>
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="message-text"
+                                          className="col-form-label fw-bold text-muted"
+                                        >
+                                          Body
+                                        </label>
+                                        <textarea
+                                          className="form-control"
+                                          
+                                          name="body"
+                                          onChange={handelAddPost}
+                                          id="message-text"
+                                        />
+                                      </div>
+                                      <div className="modal-footer mt-3">
+                                        <button
+                                          type="button"
+                                          className="btn btn-secondary"
+                                          data-bs-dismiss="modal"
+                                        >
+                                          Close
+                                        </button>
+                                        <input
+                                          type="submit"
+                                          className="btn btn-primary"
+                                          data-bs-dismiss="modal"
+                                        />
+                                      </div>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
           )}
           <div className="col-10">
             <div className=" ms-auto row  ">
@@ -206,7 +262,7 @@ const Homepage = () => {
                               type="button"
                               className="btn btn-info"
                               data-bs-toggle="modal"
-                              data-bs-target="#exampleModal"
+                              data-bs-target="#editBtn"
                               data-bs-whatever="@getbootstrap"
                               onClick={() => setEditPost(post)}
                             >
@@ -214,9 +270,9 @@ const Homepage = () => {
                             </button>
                             <div
                               className="modal fade"
-                              id="exampleModal"
+                              id="editBtn"
                               tabIndex={-1}
-                              aria-labelledby="exampleModalLabel"
+                              aria-labelledby="editBtnLabel"
                               aria-hidden="true"
                             >
                               <div className="modal-dialog">
@@ -224,7 +280,7 @@ const Homepage = () => {
                                   <div className="modal-header">
                                     <h5
                                       className="modal-title"
-                                      id="exampleModalLabel"
+                                      id="editBtnLabel"
                                     >
                                       Edit Post
                                     </h5>
