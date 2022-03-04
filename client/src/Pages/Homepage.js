@@ -358,7 +358,7 @@ const Homepage = () => {
           </div>
 
           <div
-            className="col-2 bg-light py-2  overflow-auto  shadow"
+            className="col-2 bg-light py-2  overflow-auto shadow"
             style={{ height: "150vh" }}
           >
             {users &&
